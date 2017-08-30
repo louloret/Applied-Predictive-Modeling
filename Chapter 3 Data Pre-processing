@@ -152,3 +152,47 @@ head(highCorr_glass)
 #remove columns with high correlations
 #recommeneded for deletion by findCorrelation
 filteredSegData <- Glass_notype[, -highCorr_glass]
+
+install.packages("mlbench")
+library(mlbench)
+data(Soybean)
+str(Soybean)
+
+install.packages("e1071")
+library(e1071)
+apply(Soybean, 2, skewness)
+?skewness
+
+install.packages("ggplot2")
+library(ggplot2)
+
+#histogram for factor varaib
+barplot(table(Soybean$Class))
+barplot(table(Soybean$seed))
+barplot(table(Soybean$date))
+barplot(table(Soybean$plant.stand))
+barplot(table(Soybean$precip))
+
+#histogram over all variables in dataset
+install.packages("plyr")
+install.packages("psych")
+library(plyr)
+library(psych)
+multi.hist(mpg[,sapply(mpg, is.numeric)])
+multi.hist(Soybean[,sapply(Soybean, is.numeric)])
+head(mpg)
+head(Soybean)
+
+#missing data by variables
+apply(is.na(Soybean), 2, sum)
+
+#exploring missing data using mice package
+install.packages("mice")
+library(mice)
+md.pattern(Soybean)
+#visual representation
+install.packages("VIM")
+library(VIM)
+aggr_plot <- aggr(Soybean, col = c('navyblue', 'red'),
+                  numbers=TRUE, sortVars = TRUE, labels=names(Soybean),
+                  cex.axis=.7, gap=3, ylab=c("Histogram of missing data", "Pattern"))
